@@ -1,0 +1,394 @@
+[
+    {
+        "id": "b4a6e393.027bd",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "eba078c6.e1ee68",
+        "type": "arduino out",
+        "z": "b4a6e393.027bd",
+        "name": "Led",
+        "pin": "13",
+        "state": "OUTPUT",
+        "arduino": "2a7bce7.7aa4732",
+        "x": 518.5000076293945,
+        "y": 143.00003242492676,
+        "wires": []
+    },
+    {
+        "id": "29eea0f4.402af",
+        "type": "arduino in",
+        "z": "b4a6e393.027bd",
+        "name": "Temp",
+        "pin": "1",
+        "state": "ANALOG",
+        "arduino": "2a7bce7.7aa4732",
+        "x": 139.10000610351562,
+        "y": 50.60000705718994,
+        "wires": [
+            [
+                "142db235.14f89e"
+            ]
+        ]
+    },
+    {
+        "id": "142db235.14f89e",
+        "type": "function",
+        "z": "b4a6e393.027bd",
+        "name": "Conversao",
+        "func": "msg.payload = msg.payload * 0.48828125;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 343.1000061035156,
+        "y": 49.39999485015869,
+        "wires": [
+            [
+                "67098e10.d0e3a"
+            ]
+        ]
+    },
+    {
+        "id": "67098e10.d0e3a",
+        "type": "delay",
+        "z": "b4a6e393.027bd",
+        "name": "DelayMSG",
+        "pauseType": "rate",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "20",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 538.5000076293945,
+        "y": 50.000003814697266,
+        "wires": [
+            [
+                "e0df143a.853b98"
+            ]
+        ]
+    },
+    {
+        "id": "e0df143a.853b98",
+        "type": "mqtt out",
+        "z": "b4a6e393.027bd",
+        "name": "Tmp",
+        "topic": "tempiottrabalho",
+        "qos": "",
+        "retain": "true",
+        "broker": "c96fcd18.40509",
+        "x": 731.1000595092773,
+        "y": 50.000003814697266,
+        "wires": []
+    },
+    {
+        "id": "1393779.697f588",
+        "type": "mqtt in",
+        "z": "b4a6e393.027bd",
+        "name": "Temperatura",
+        "topic": "tempiottrabalho",
+        "qos": "2",
+        "broker": "c96fcd18.40509",
+        "x": 117.10000610351562,
+        "y": 145.00001621246338,
+        "wires": [
+            [
+                "7d3d9768.23b698",
+                "245de075.d2e7d",
+                "dc6ba44b.857d18",
+                "60834933.e78d58"
+            ]
+        ]
+    },
+    {
+        "id": "7d3d9768.23b698",
+        "type": "function",
+        "z": "b4a6e393.027bd",
+        "name": "ValidaTemp",
+        "func": "if(msg.payload >= global.get('max')) {\n    msg.payload = 1;\n    return msg;\n} else {\n    msg.payload = 0;\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 342.16665267944336,
+        "y": 144.66665744781494,
+        "wires": [
+            [
+                "eba078c6.e1ee68",
+                "cb4d10fa.174be"
+            ]
+        ]
+    },
+    {
+        "id": "245de075.d2e7d",
+        "type": "debug",
+        "z": "b4a6e393.027bd",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 344.10000228881836,
+        "y": 300.0000066757202,
+        "wires": []
+    },
+    {
+        "id": "dc6ba44b.857d18",
+        "type": "ui_chart",
+        "z": "b4a6e393.027bd",
+        "name": "TemperaturaGraf",
+        "group": "fa5f6b80.0a6318",
+        "order": 0,
+        "width": "16",
+        "height": "6",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 365.10000228881836,
+        "y": 252.4000062942505,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "60834933.e78d58",
+        "type": "ui_gauge",
+        "z": "b4a6e393.027bd",
+        "name": "",
+        "group": "fa5f6b80.0a6318",
+        "order": 0,
+        "width": "16",
+        "height": "6",
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b3f7",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 326.10000228881836,
+        "y": 201.40000438690186,
+        "wires": []
+    },
+    {
+        "id": "f891c0f5.e0542",
+        "type": "mqtt in",
+        "z": "b4a6e393.027bd",
+        "name": "Temp max",
+        "topic": "tmpmax",
+        "qos": "2",
+        "broker": "c96fcd18.40509",
+        "x": 136.50011444091797,
+        "y": 372.5555715560913,
+        "wires": [
+            [
+                "6cf51661.bf0348",
+                "72f5a36e.6568ec"
+            ]
+        ]
+    },
+    {
+        "id": "6cf51661.bf0348",
+        "type": "function",
+        "z": "b4a6e393.027bd",
+        "name": "DefineTempMax",
+        "func": "global.set('max', msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 355.1001510620117,
+        "y": 373.0000057220459,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "72f5a36e.6568ec",
+        "type": "ui_text",
+        "z": "b4a6e393.027bd",
+        "group": "fa5f6b80.0a6318",
+        "order": 0,
+        "width": "16",
+        "height": "1",
+        "name": "",
+        "label": "Temperatura para Alerta",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 387.1000061035156,
+        "y": 426.4000072479248,
+        "wires": []
+    },
+    {
+        "id": "9844b99f.181908",
+        "type": "sms",
+        "z": "b4a6e393.027bd",
+        "name": "sms",
+        "message": "Alerta, a temperatura está acima do padrão definido",
+        "numbers": "+5511998111098",
+        "throttle": "1",
+        "twilio": "8a118188.09615",
+        "x": 667.5000114440918,
+        "y": 209.00000286102295,
+        "wires": [
+            [
+                "e5925b00.188558"
+            ]
+        ]
+    },
+    {
+        "id": "e5925b00.188558",
+        "type": "debug",
+        "z": "b4a6e393.027bd",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 840.1000595092773,
+        "y": 209.00000286102295,
+        "wires": []
+    },
+    {
+        "id": "cb4d10fa.174be",
+        "type": "switch",
+        "z": "b4a6e393.027bd",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 513.1000366210938,
+        "y": 208.60000610351562,
+        "wires": [
+            [
+                "9844b99f.181908"
+            ]
+        ]
+    },
+    {
+        "id": "e94cdb13.d28578",
+        "type": "inject",
+        "z": "b4a6e393.027bd",
+        "name": "",
+        "topic": "",
+        "payload": "40",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130.10000610351562,
+        "y": 506.00000762939453,
+        "wires": [
+            [
+                "69cfc379.132bbc"
+            ]
+        ]
+    },
+    {
+        "id": "69cfc379.132bbc",
+        "type": "mqtt out",
+        "z": "b4a6e393.027bd",
+        "name": "Temp max",
+        "topic": "tmpmax",
+        "qos": "",
+        "retain": "",
+        "broker": "c96fcd18.40509",
+        "x": 354.1000061035156,
+        "y": 505.00000762939453,
+        "wires": []
+    },
+    {
+        "id": "2a7bce7.7aa4732",
+        "type": "arduino-board",
+        "z": "",
+        "device": "COM5"
+    },
+    {
+        "id": "c96fcd18.40509",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "MQTT",
+        "broker": "iot.eclipse.org",
+        "port": "1883",
+        "clientid": "tempiottrabalho",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "fa5f6b80.0a6318",
+        "type": "ui_group",
+        "z": "",
+        "name": "dashboardfront",
+        "tab": "f745d134.85203",
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "8a118188.09615",
+        "type": "twilioConfig",
+        "z": "",
+        "name": "twilioConfig"
+    },
+    {
+        "id": "f745d134.85203",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+]
